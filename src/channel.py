@@ -10,16 +10,16 @@ class Channel:
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
-        self.title = self.get_info()['items'][0]['snippet']['title']
-        self.description = self.get_info()['items'][0]['snippet']['localized']['description']
+        self.channel = self.get_service().channels().list(id=self.__channel_id, part='snippet,statistics').execute()
+        self.title = self.channel['items'][0]['snippet']['title']
+        self.description = self.channel['items'][0]['snippet']['localized']['description']
         self.url = ''.join(['https://www.youtube.com/channel/', self.__channel_id])
-        self.subscriber_count = self.get_info()['items'][0]['statistics']['subscriberCount']
-        self.video_count = self.get_info()['items'][0]['statistics']['videoCount']
-        self.view_count = self.get_info()['items'][0]['statistics']['viewCount']
+        self.subscriber_count = self.channel['items'][0]['statistics']['subscriberCount']
+        self.video_count = self.channel['items'][0]['statistics']['videoCount']
+        self.view_count = self.channel['items'][0]['statistics']['viewCount']
 
     def get_info(self):
-        channel = self.get_service().channels().list(id=self.__channel_id, part='snippet,statistics').execute()
-        return channel
+        return self.channel
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
