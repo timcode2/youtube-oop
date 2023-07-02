@@ -30,6 +30,7 @@ class Video:
     def get_service(cls):
         return build('youtube', 'v3', developerKey=cls.api_key)
 
+
 class PLVideo(Video):
     def __init__(self, video_id, playlist_id):
         super().__init__(video_id)
