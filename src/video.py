@@ -33,12 +33,7 @@ class Video:
 class PLVideo(Video):
     def __init__(self, video_id, playlist_id):
         super().__init__(video_id)
-        self.playlist_id = self.get_service().playlistItems().list(playlistId=playlist_id,
-                                               part='contentDetails',
-                                               maxResults=50,
-                                               ).execute()
+        self.playlist_id = playlist_id
 
     def __str__(self):
         return f'{self.title}'
-
-
