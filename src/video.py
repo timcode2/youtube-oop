@@ -7,14 +7,25 @@ class Video:
     api_key: str = os.getenv('YT_API_KEY')
 
     def __init__(self, video_id):
-        self.video_id = video_id
-        self.video_response = self.get_service().videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                                               id=video_id
-                                                               ).execute()
-        self.title: str = self.video_response['items'][0]['snippet']['title']
-        self.url = ''.join(['https://www.youtube.com/watch?v=', self.video_id])
-        self.view_count: int = self.video_response['items'][0]['statistics']['viewCount']
-        self.like_count: int = self.video_response['items'][0]['statistics']['likeCount']
+        try:
+            self.video_id = video_id
+            self.video_response = self.get_service().videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                                                   id=video_id
+                                                                   ).execute()
+            self.title: str = self.video_response['items'][0]['snippet']['title']
+            self.url = ''.join(['https://www.youtube.com/watch?v=', self.video_id])
+            self.view_count: int = self.video_response['items'][0]['statistics']['viewCount']
+            self.like_count: int = self.video_response['items'][0]['statistics']['likeCount']
+        except IndexError:
+            self.title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
+        except AttributeError:
+            self.title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
 
     def __str__(self):
         return f'{self.title}'
